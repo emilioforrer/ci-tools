@@ -6,6 +6,8 @@ To see a list of supported tags and dependency versions, please see the [CHANGEL
 ## Description
 ---
 
+A Docker Hub image for CI/CD deployments, with tools like curl, dind, docker-compose, kind, kubectl, helm, etc
+
 ### Usage
 ---
 
@@ -214,5 +216,5 @@ e.g
 ```
 docker run -v $(pwd)/:/home/developer/workspace \
            emilioforrer/ci-tools:latest \
-           curl -fG https://raw.githubusercontent.com/emilioforrer/ci-tools/develop/Readme.md > README.md
+           curl -fG https://raw.githubusercontent.com/emilioforrer/ci-tools/develop/README.md > README.md
 ```
