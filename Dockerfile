@@ -1,4 +1,6 @@
-FROM docker:19
+ARG DOCKER_VERSION_IMAGE_NAME=docker:19
+
+FROM ${DOCKER_VERSION_IMAGE_NAME}
 
 # Note: Latest version of kubectl may be found at:
 # https://github.com/kubernetes/kubernetes/releases
@@ -9,7 +11,7 @@ ENV HELM_VERSION="v3.1.2"
 
 # Install dependencies
 RUN apk add --no-cache --virtual build-dependencies python-dev libffi-dev openssl-dev gcc libc-dev make && \
-    apk add --no-cache ca-certificates bash git openssh curl py-pip jq  && \
+    apk add --no-cache ca-certificates sudo bash git openssh curl py-pip jq  && \
     pip install docker-compose && \
     pip install yq
 
@@ -28,3 +30,26 @@ RUN wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | t
 RUN curl -Lo ./kind "https://github.com/kubernetes-sigs/kind/releases/download/v0.7.0/kind-$(uname)-amd64" && \
     chmod +x ./kind  && \
     mv ./kind /usr/local/bin
+
+# Define docker user
+ENV DOCKER_USER=developer
+
+# Add the docker user and group
+RUN addgroup -S docker && adduser --uid 1000 -S ${DOCKER_USER} -G docker
+
+# Make the docker user sudo
+RUN echo "${DOCKER_USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${DOCKER_USER} && \
+    echo "Set disable_coredump false" >> /etc/sudo.conf && \
+    chmod 0440 /etc/sudoers.d/${DOCKER_USER}
+
+# switch to the docker user
+USER ${DOCKER_USER}
+
+# Set the workspace directory
+ENV WORKSPACE=/home/${DOCKER_USER}/workspace
+
+# Make the workspace directory
+RUN mkdir -p ${WORKSPACE} && chmod 777 -R ${WORKSPACE}
+
+# cd to the working directory
+WORKDIR ${WORKSPACE}

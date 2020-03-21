@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - 2020-03-20
 ### Added
 - Tools
+  - **git**: 2.24.1
   - **bash**: 5.0.11(1)-release
   - **yq**: 2.10.0
   - **jq**: v20191114-85-g260888d269
