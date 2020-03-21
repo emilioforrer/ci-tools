@@ -22,8 +22,7 @@ RUN wget -q https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_
 
 # Download and install heml
 RUN wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm && \
-    chmod +x /usr/local/bin/helm && \
-    rm get_helm.sh
+    chmod +x /usr/local/bin/helm
 
 # Download and install kind
 RUN curl -Lo ./kind "https://github.com/kubernetes-sigs/kind/releases/download/v0.7.0/kind-$(uname)-amd64" && \
