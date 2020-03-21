@@ -1,4 +1,6 @@
-FROM docker:19
+ARG DOCKER_VERSION_IMAGE_NAME=docker:19
+
+FROM ${DOCKER_VERSION_IMAGE_NAME}
 
 # Note: Latest version of kubectl may be found at:
 # https://github.com/kubernetes/kubernetes/releases
@@ -29,25 +31,19 @@ RUN curl -Lo ./kind "https://github.com/kubernetes-sigs/kind/releases/download/v
     chmod +x ./kind  && \
     mv ./kind /usr/local/bin
 
-
 # Define docker user
 ENV DOCKER_USER=developer
-
-
-
 
 # Add the docker user and group
 RUN addgroup -S docker && adduser --uid 1000 -S ${DOCKER_USER} -G docker
 
 # Make the docker user sudo
 RUN echo "${DOCKER_USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${DOCKER_USER} && \
-    echo "${DOCKER_USER} ALL=(root) NOPASSWD: /usr/local/bin/docker" > /etc/sudoers.d/${DOCKER_USER} && \
     echo "Set disable_coredump false" >> /etc/sudo.conf && \
     chmod 0440 /etc/sudoers.d/${DOCKER_USER}
 
 # switch to the docker user
 USER ${DOCKER_USER}
-
 
 # Set the workspace directory
 ENV WORKSPACE=/home/${DOCKER_USER}/workspace
