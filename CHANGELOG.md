@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2020-04-18
+### Added
+- Tools
+  - **vault**: v1.4.0
+  - Colored bash
+  - New `print` command, for printing text with color
+
+### Changed
+- Tools
+  - **docker-compose**: 1.25.5
+  - **git**: 2.24.2
+  - **kubectl**: v1.18.2
+
 ## [0.1.0] - 2020-03-20
 ### Added
 - Tools
