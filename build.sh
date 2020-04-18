@@ -13,11 +13,12 @@ docker build --build-arg DOCKER_VERSION_IMAGE_NAME=${DOCKER_VERSION_IMAGE_NAME}-
 docker build --build-arg DOCKER_VERSION_IMAGE_NAME=${DOCKER_VERSION_IMAGE_NAME} -t ${LATEST_VERSION_IMAGE_NAME}  -t ${VERSION_IMAGE_NAME}  .
 
 if [ ! -z "$DOCKER_PUSH" ]
-  # docker push ${VERSION_IMAGE_NAME}
-  # docker push ${VERSION_IMAGE_NAME}-dind
+then
+  docker push ${VERSION_IMAGE_NAME}
+  docker push ${VERSION_IMAGE_NAME}-dind
 
-  # docker push ${LATEST_VERSION_IMAGE_NAME}
-  # docker push ${LATEST_VERSION_IMAGE_NAME}-dind
+  docker push ${LATEST_VERSION_IMAGE_NAME}
+  docker push ${LATEST_VERSION_IMAGE_NAME}-dind
 fi
 
 
