@@ -60,6 +60,13 @@ RUN echo "${DOCKER_USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${DOCKER_USER
     echo "Set disable_coredump false" >> /etc/sudo.conf && \
     chmod 0440 /etc/sudoers.d/${DOCKER_USER}
 
+# Copy the scripts
+COPY scripts/ /scripts
+
+# Copy .bashrc file
+RUN cp /scripts/.bashrc /root && \
+    cp /scripts/.bashrc /home/${DOCKER_USER}
+
 # switch to the docker user
 USER ${DOCKER_USER}
 
@@ -71,3 +78,6 @@ RUN mkdir -p ${WORKSPACE} && chmod 777 -R ${WORKSPACE}
 
 # cd to the working directory
 WORKDIR ${WORKSPACE}
+
+# Set default shell command to bash
+SHELL ["/bin/bash", "--login", "-c"]

@@ -11,6 +11,59 @@ To see a list of supported tags and dependency versions, please see the [CHANGEL
 ### Usage
 ---
 
+#### Bash
+
+This image has a custom colored bash and prints the `STERR` in red color .
+
+New extra commands:
+
+##### `print`
+
+Is a new command that accepts as a first parameter a **color** and a second parameter a **text** to print (if no color given, it prints the text with the **default** color).
+
+**e.g.**
+
+Print the text in red color <span style="color: red;background-color: black;padding: 1px 10px 1px 8px">hello</span>
+```bash
+print r "hello"
+```
+Print the text as warning (yellow) color <span style="color: yellow;background-color: black;padding: 1px 10px 1px 8px">hello</span>
+
+
+```bash
+print warn "hello"
+```
+
+Print the text in cyan color <span style="color: cyan;background-color: black;padding: 1px 10px 1px 8px">hello</span>
+
+```bash
+print cyan "hello"
+```
+
+Print the text in default color <span style="color: white;background-color: black;padding: 1px 10px 1px 8px">hello</span>
+```bash
+print "hello"
+```
+
+
+
+List of colors
+
+Name            | Short name
+----------------|------------
+black           | bk
+red             |  r
+green           |  g
+yellow          |  y
+blue            |  b
+purple          |  p
+cyan            |  c
+white           | wh
+info            |  i
+warn (yellow)   |  w
+error (red)     |  e
+sucsess (green) | ok
+
 #### DIND (Docker in Docker)
 
 [DIND](https://itnext.io/docker-in-docker-521958d34efd) is a way to run Docker inside a Docker container (for example, to pull and build images, or to run other containers) in your CI/CD system.
