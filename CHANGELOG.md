@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Tools
   - **vault**: v1.4.0
+  - Colored bash
+  - New `print` command, for printing text with color
 
 ### Changed
 - Tools
