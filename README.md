@@ -104,10 +104,9 @@ docker run --rm -it \
 e.g.
 
 ```
-docker run --rm -it \
-           -v /var/run/docker.sock:/var/run/docker.sock \
-           emilioforrer/ci-tools:latest \
-           sudo kubectl cluster-info
+docker run --rm -v "$KUBECONFIG:$KUBECONFIG" \
+           -e KUBECONFIG=$KUBECONFIG \
+           emilioforrer/ci-tools:latest kubectl version
 ```
 
 #### Helm
@@ -229,4 +228,37 @@ e.g
 docker run -v $(pwd)/:/home/developer/workspace \
            emilioforrer/ci-tools:latest \
            vault --version
+```
+
+## Development
+
+### Scripts
+
+#### Build Docker image
+
+```bash
+# Build Docker image
+./build.sh
+# Build and push Docker image
+DOCKER_PUSH=true ./build.sh
+```
+
+**Note:** Before pushing an image, make sure to change the release version in the `VERSION` file.
+
+#### Check tools versions
+
+```bash
+docker run --rm emilioforrer/ci-tools:latest git --version
+docker run --rm emilioforrer/ci-tools:latest bash --version
+docker run --rm emilioforrer/ci-tools:latest yq --version
+docker run --rm emilioforrer/ci-tools:latest jq --version
+docker run --rm emilioforrer/ci-tools:latest curl --version
+docker run --rm emilioforrer/ci-tools:latest docker --version
+docker run --rm emilioforrer/ci-tools:latest docker-compose --version
+docker run --rm emilioforrer/ci-tools:latest kind --version
+docker run --rm emilioforrer/ci-tools:latest helm version
+docker run --rm -v "$KUBECONFIG:$KUBECONFIG" \
+           -e KUBECONFIG=$KUBECONFIG \
+           emilioforrer/ci-tools:latest kubectl version
+
 ```

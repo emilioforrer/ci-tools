@@ -4,7 +4,7 @@ FROM ${DOCKER_VERSION_IMAGE_NAME}
 
 # Note: Latest version of kubectl may be found at:
 # https://github.com/kubernetes/kubernetes/releases
-ENV KUBECTL_VERSION="v1.8.0"
+ENV KUBECTL_VERSION="v1.18.2"
 
 # Note: Latest version of helm may be found at:
 # https://github.com/kubernetes/helm/releases
