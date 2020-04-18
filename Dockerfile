@@ -5,9 +5,18 @@ FROM ${DOCKER_VERSION_IMAGE_NAME}
 # Note: Latest version of kubectl may be found at:
 # https://github.com/kubernetes/kubernetes/releases
 ENV KUBECTL_VERSION="v1.8.0"
+
 # Note: Latest version of helm may be found at:
 # https://github.com/kubernetes/helm/releases
 ENV HELM_VERSION="v3.1.2"
+
+# Note: Latest version of vault may be found at:
+# https://github.com/kubernetes-sigs/kind/releases
+ENV KIND_VERSION="v0.7.0"
+
+# Note: Latest version of vault may be found at:
+# https://releases.hashicorp.com/vault/
+ENV VAULT_VERSION="1.4.0"
 
 # Install dependencies
 RUN apk add --no-cache --virtual build-dependencies python-dev libffi-dev openssl-dev gcc libc-dev make && \
@@ -27,9 +36,18 @@ RUN wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | t
     chmod +x /usr/local/bin/helm
 
 # Download and install kind
-RUN curl -Lo ./kind "https://github.com/kubernetes-sigs/kind/releases/download/v0.7.0/kind-$(uname)-amd64" && \
+RUN curl -Lo ./kind "https://github.com/kubernetes-sigs/kind/releases/download/${KIND_VERSION}/kind-$(uname)-amd64" && \
     chmod +x ./kind  && \
     mv ./kind /usr/local/bin
+
+# Download and install vault cli
+
+RUN wget -q https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip && \
+    chown root vault_${VAULT_VERSION}_linux_amd64.zip && \
+    unzip vault_${VAULT_VERSION}_linux_amd64.zip && \
+    chmod +x ./vault  && \
+    mv ./vault /usr/local/bin && \
+    rm ./vault_${VAULT_VERSION}_linux_amd64.zip
 
 # Define docker user
 ENV DOCKER_USER=developer

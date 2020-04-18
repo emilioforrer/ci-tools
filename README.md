@@ -218,3 +218,15 @@ docker run -v $(pwd)/:/home/developer/workspace \
            emilioforrer/ci-tools:latest \
            curl -fG https://raw.githubusercontent.com/emilioforrer/ci-tools/develop/README.md > README.md
 ```
+
+#### Vault CLI
+
+[vault](https://www.vaultproject.io/) is a secure, store and tightly control access to tokens, passwords, certificates, encryption keys for protecting secrets and other sensitive data using a UI, CLI, or HTTP API.
+
+e.g 
+
+```
+docker run -v $(pwd)/:/home/developer/workspace \
+           emilioforrer/ci-tools:latest \
+           vault --version
+```
