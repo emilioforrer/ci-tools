@@ -1,12 +1,12 @@
 # CI Tools - Docker hub image
 ---
 
-To see a list of supported tags and dependency versions, please see the [CHANGELOG.md](CHANGELOG.md)
-
 ## Description
 ---
 
-A Docker Hub image for CI/CD deployments, with tools like curl, dind, docker-compose, kind, kubectl, helm, etc
+[CI Tools](https://github.com/emilioforrer/ci-tools) is a [Docker Hub](https://hub.docker.com/r/emilioforrer/ci-tools) image for CI/CD deployments, with tools like curl, dind, docker-compose, kind, kubectl, helm, vault, etc.
+
+To see a list of supported tags and dependency versions, please see the [CHANGELOG.md](CHANGELOG.md)
 
 ### Usage
 ---
