@@ -4,10 +4,19 @@ FROM ${DOCKER_VERSION_IMAGE_NAME}
 
 # Note: Latest version of kubectl may be found at:
 # https://github.com/kubernetes/kubernetes/releases
-ENV KUBECTL_VERSION="v1.8.0"
+ENV KUBECTL_VERSION="v1.18.2"
+
 # Note: Latest version of helm may be found at:
 # https://github.com/kubernetes/helm/releases
 ENV HELM_VERSION="v3.1.2"
+
+# Note: Latest version of vault may be found at:
+# https://github.com/kubernetes-sigs/kind/releases
+ENV KIND_VERSION="v0.7.0"
+
+# Note: Latest version of vault may be found at:
+# https://releases.hashicorp.com/vault/
+ENV VAULT_VERSION="1.4.0"
 
 # Install dependencies
 RUN apk add --no-cache --virtual build-dependencies python-dev libffi-dev openssl-dev gcc libc-dev make && \
@@ -27,9 +36,18 @@ RUN wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | t
     chmod +x /usr/local/bin/helm
 
 # Download and install kind
-RUN curl -Lo ./kind "https://github.com/kubernetes-sigs/kind/releases/download/v0.7.0/kind-$(uname)-amd64" && \
+RUN curl -Lo ./kind "https://github.com/kubernetes-sigs/kind/releases/download/${KIND_VERSION}/kind-$(uname)-amd64" && \
     chmod +x ./kind  && \
     mv ./kind /usr/local/bin
+
+# Download and install vault cli
+
+RUN wget -q https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip && \
+    chown root vault_${VAULT_VERSION}_linux_amd64.zip && \
+    unzip vault_${VAULT_VERSION}_linux_amd64.zip && \
+    chmod +x ./vault  && \
+    mv ./vault /usr/local/bin && \
+    rm ./vault_${VAULT_VERSION}_linux_amd64.zip
 
 # Define docker user
 ENV DOCKER_USER=developer
@@ -42,6 +60,13 @@ RUN echo "${DOCKER_USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${DOCKER_USER
     echo "Set disable_coredump false" >> /etc/sudo.conf && \
     chmod 0440 /etc/sudoers.d/${DOCKER_USER}
 
+# Copy the scripts
+COPY scripts/ /scripts
+
+# Copy .bashrc file
+RUN cp /scripts/.bashrc /root && \
+    cp /scripts/.bashrc /home/${DOCKER_USER}
+
 # switch to the docker user
 USER ${DOCKER_USER}
 
@@ -53,3 +78,6 @@ RUN mkdir -p ${WORKSPACE} && chmod 777 -R ${WORKSPACE}
 
 # cd to the working directory
 WORKDIR ${WORKSPACE}
+
+# Set default shell command to bash
+SHELL ["/bin/bash", "--login", "-c"]

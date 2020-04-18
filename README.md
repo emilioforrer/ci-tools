@@ -1,13 +1,68 @@
 # CI Tools - Docker hub image
 ---
 
-To see a list of supported tags and dependency versions, please see the [CHANGELOG.md](CHANGELOG.md)
-
 ## Description
 ---
 
+[CI Tools](https://github.com/emilioforrer/ci-tools) is a [Docker Hub](https://hub.docker.com/r/emilioforrer/ci-tools) image for CI/CD deployments, with tools like curl, dind, docker-compose, kind, kubectl, helm, vault, etc.
+
+To see a list of supported tags and dependency versions, please see the [CHANGELOG.md](CHANGELOG.md)
+
 ### Usage
 ---
+
+#### Bash
+
+This image has a custom colored bash and prints the `STERR` in red color .
+
+New extra commands:
+
+##### `print`
+
+Is a new command that accepts as a first parameter a **color** and a second parameter a **text** to print (if no color given, it prints the text with the **default** color).
+
+**e.g.**
+
+Print the text in red color <span style="color: red;background-color: black;padding: 1px 10px 1px 8px">hello</span>
+```bash
+print r "hello"
+```
+Print the text as warning (yellow) color <span style="color: yellow;background-color: black;padding: 1px 10px 1px 8px">hello</span>
+
+
+```bash
+print warn "hello"
+```
+
+Print the text in cyan color <span style="color: cyan;background-color: black;padding: 1px 10px 1px 8px">hello</span>
+
+```bash
+print cyan "hello"
+```
+
+Print the text in default color <span style="color: white;background-color: black;padding: 1px 10px 1px 8px">hello</span>
+```bash
+print "hello"
+```
+
+
+
+List of colors
+
+Name            | Short name
+----------------|------------
+black           | bk
+red             |  r
+green           |  g
+yellow          |  y
+blue            |  b
+purple          |  p
+cyan            |  c
+white           | wh
+info            |  i
+warn (yellow)   |  w
+error (red)     |  e
+sucsess (green) | ok
 
 #### DIND (Docker in Docker)
 
@@ -102,10 +157,9 @@ docker run --rm -it \
 e.g.
 
 ```
-docker run --rm -it \
-           -v /var/run/docker.sock:/var/run/docker.sock \
-           emilioforrer/ci-tools:latest \
-           sudo kubectl cluster-info
+docker run --rm -v "$KUBECONFIG:$KUBECONFIG" \
+           -e KUBECONFIG=$KUBECONFIG \
+           emilioforrer/ci-tools:latest kubectl version
 ```
 
 #### Helm
@@ -214,5 +268,50 @@ e.g
 ```
 docker run -v $(pwd)/:/home/developer/workspace \
            emilioforrer/ci-tools:latest \
-           curl -fG https://raw.githubusercontent.com/emilioforrer/ci-tools/develop/Readme.md > README.md
+           curl -fG https://raw.githubusercontent.com/emilioforrer/ci-tools/develop/README.md > README.md
+```
+
+#### Vault CLI
+
+[vault](https://www.vaultproject.io/) is a secure, store and tightly control access to tokens, passwords, certificates, encryption keys for protecting secrets and other sensitive data using a UI, CLI, or HTTP API.
+
+e.g 
+
+```
+docker run -v $(pwd)/:/home/developer/workspace \
+           emilioforrer/ci-tools:latest \
+           vault --version
+```
+
+## Development
+
+### Scripts
+
+#### Build Docker image
+
+```bash
+# Build Docker image
+./build.sh
+# Build and push Docker image
+DOCKER_PUSH=true ./build.sh
+```
+
+**Note:** Before pushing an image, make sure to change the release version in the `VERSION` file.
+
+#### Check tools versions
+
+```bash
+docker run --rm emilioforrer/ci-tools:latest git --version
+docker run --rm emilioforrer/ci-tools:latest bash --version
+docker run --rm emilioforrer/ci-tools:latest yq --version
+docker run --rm emilioforrer/ci-tools:latest jq --version
+docker run --rm emilioforrer/ci-tools:latest curl --version
+docker run --rm emilioforrer/ci-tools:latest docker --version
+docker run --rm emilioforrer/ci-tools:latest docker-compose --version
+docker run --rm emilioforrer/ci-tools:latest kind --version
+docker run --rm emilioforrer/ci-tools:latest helm version
+docker run --rm -v "$KUBECONFIG:$KUBECONFIG" \
+           -e KUBECONFIG=$KUBECONFIG \
+           emilioforrer/ci-tools:latest kubectl version
+
 ```
