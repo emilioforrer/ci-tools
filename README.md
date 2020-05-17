@@ -4,9 +4,28 @@
 ## Description
 ---
 
-[CI Tools](https://github.com/emilioforrer/ci-tools) is a [Docker Hub](https://hub.docker.com/r/emilioforrer/ci-tools) image for CI/CD deployments, with tools like curl, dind, docker-compose, kind, kubectl, helm, vault, etc.
+[CI Tools](https://github.com/emilioforrer/ci-tools) is a [Docker Hub](https://hub.docker.com/r/emilioforrer/ci-tools) image for CI/CD deployments, with tools like curl, dind, docker-compose, kind, kubectl, helm, vault, 1password, semver-cli, argo-cd, etc.
 
-To see a list of supported tags and dependency versions, please see the [CHANGELOG.md](CHANGELOG.md)
+### Tools and dependencies
+
+|Name              | Version                   | Command
+|------------------|---------------------------|--------
+|git               | 2.24.3                    | git version
+|bash              | 5.0.11(1)-release         | bash --version
+|yq                | 2.10.1                    | yq --version
+|jq                | v20191114-85-g260888d269  | jq --version
+|curl              | 7.67.0                    | curl --version
+|docker            | 19.03.8                   | docker --version
+|docker-compose    | 1.25.5                    | docker-compose --version
+|kind              | 0.7.0                     | kind --version
+|kubectl           | v1.18.2                   | kubectl version
+|helm              | v3.1.2                    | helm version
+|vault             | v1.4.0                    | vault --version
+|1password         | 0.10.0                    | op --version
+|semver-cli        | 1.1.0                     | --
+|argocd            | v1.5.5                    | --
+
+**Note:** to see a list of changes for supported tags and dependency versions, please see the [CHANGELOG.md](CHANGELOG.md)
 
 ### Usage
 ---
@@ -15,9 +34,9 @@ To see a list of supported tags and dependency versions, please see the [CHANGEL
 
 This image has a custom colored bash and prints the `STERR` in red color .
 
-New extra commands:
+New extra **commands**:
 
-##### `print`
+##### `println`
 
 Is a new command that accepts as a first parameter a **color** and a second parameter a **text** to print (if no color given, it prints the text with the **default** color).
 
@@ -25,27 +44,25 @@ Is a new command that accepts as a first parameter a **color** and a second para
 
 Print the text in red color <span style="color: red;background-color: black;padding: 1px 10px 1px 8px">hello</span>
 ```bash
-print r "hello"
+println r "hello"
 ```
 Print the text as warning (yellow) color <span style="color: yellow;background-color: black;padding: 1px 10px 1px 8px">hello</span>
 
 
 ```bash
-print warn "hello"
+println warn "hello"
 ```
 
 Print the text in cyan color <span style="color: cyan;background-color: black;padding: 1px 10px 1px 8px">hello</span>
 
 ```bash
-print cyan "hello"
+println cyan "hello"
 ```
 
 Print the text in default color <span style="color: white;background-color: black;padding: 1px 10px 1px 8px">hello</span>
 ```bash
-print "hello"
+println "hello"
 ```
-
-
 
 List of colors
 
@@ -68,7 +85,7 @@ sucsess (green) | ok
 
 [DIND](https://itnext.io/docker-in-docker-521958d34efd) is a way to run Docker inside a Docker container (for example, to pull and build images, or to run other containers) in your CI/CD system.
 
-```
+```bash
 docker run --rm -it \
            -v /var/run/docker.sock:/var/run/docker.sock \
            emilioforrer/ci-tools:latest \
@@ -77,7 +94,7 @@ docker run --rm -it \
 
 Inside the image you can run `sudo docker version` or
 
-```
+```bash
 docker run --rm -it \
            -v /var/run/docker.sock:/var/run/docker.sock \
            emilioforrer/ci-tools:latest \
@@ -90,12 +107,21 @@ docker run --rm -it \
 
 e.g. Create a `docker-compose.yaml` file.
 
-```
+```bash
 cat << EOF > docker-compose.yaml
 version: "3.7"
 services:
+  nginx-hello:
+    image: emilioforrer/nginx-hello
+    ports:
+      - '8000:80'
   ruby-hello:
     image: emilioforrer/ruby-hello
+    network_mode: "host"
+    ports:
+      - '5000:5000'
+  python-hello:
+    image: emilioforrer/python-hello
     network_mode: "host"
     ports:
       - '5000:5000'
@@ -103,9 +129,9 @@ services:
     image: emilioforrer/nodejs-hello
     network_mode: "host"
     environment:
-      URLS: 'http://0.0.0.0:5000,http://0.0.0.0:4000'
+      URLS: 'http://0.0.0.0:7000,http://0.0.0.0:3000,http://0.0.0.0:4000,http://0.0.0.0:5000'
     ports:
-      - '5001:5001'
+      - '9000:9000'
   php-hello:
     image: emilioforrer/php-hello
     network_mode: "host"
@@ -117,14 +143,14 @@ services:
     ports:
       - '4000:4000'
     environment:
-      RUBY_URL: 'http://0.0.0.0:5000'
+      RUBY_URL: 'http://0.0.0.0:3000'
       PHP_URL: 'http://0.0.0.0:7000'
 EOF
 ```
 
 And then run 
 
-```
+```bash
 docker run --rm -it \
            -v /var/run/docker.sock:/var/run/docker.sock \
            -v $(pwd)/:/home/developer/workspace \
@@ -142,7 +168,7 @@ kind was primarily designed for testing Kubernetes itself, but may be used for l
 
 e.g. 
 
-```
+```bash
 docker run --rm -it \
            -v /var/run/docker.sock:/var/run/docker.sock \
            -v $(pwd)/:/home/developer/workspace \
@@ -156,7 +182,7 @@ docker run --rm -it \
 
 e.g.
 
-```
+```bash
 docker run --rm -v "$KUBECONFIG:$KUBECONFIG" \
            -e KUBECONFIG=$KUBECONFIG \
            emilioforrer/ci-tools:latest kubectl version
@@ -167,7 +193,7 @@ docker run --rm -v "$KUBECONFIG:$KUBECONFIG" \
 [Helm](https://helm.sh/) Helm is the best way to find, share, and use software built for Kubernetes.
 
 
-```
+```bash
 docker run -v $(pwd)/:/home/developer/workspace \
            emilioforrer/ci-tools:latest \
            helm version
@@ -179,7 +205,7 @@ docker run -v $(pwd)/:/home/developer/workspace \
 
 e.g. Clonning a repository in the current working directory of the host.
 
-```
+```bash
 docker run -v $(pwd)/:/home/developer/workspace \
            emilioforrer/ci-tools:latest \
            git clone https://github.com/emilioforrer/ci-tools.git
@@ -191,7 +217,7 @@ docker run -v $(pwd)/:/home/developer/workspace \
 
 e.g. Create a yaml and get a node.
 
-```
+```bash
 cat <<EOF > pod.yaml
 apiVersion: v1
 kind: Pod
@@ -209,7 +235,7 @@ EOF
 
 Get the container name
 
-```
+```bash
 docker run -v $(pwd)/:/home/developer/workspace \
            emilioforrer/ci-tools:latest \
            yq '.spec.containers[0].name' pod.yaml
@@ -223,7 +249,7 @@ docker run -v $(pwd)/:/home/developer/workspace \
 
 e.g. Create a json and get a node.
 
-```
+```bash
 cat <<EOF > pod.json
 {
   "apiVersion": "v1",
@@ -253,7 +279,7 @@ EOF
 
 Get the container name
 
-```
+```bash
 docker run -v $(pwd)/:/home/developer/workspace \
            emilioforrer/ci-tools:latest \
            jq '.spec.containers[0].name' pod.json
@@ -265,7 +291,7 @@ docker run -v $(pwd)/:/home/developer/workspace \
 
 e.g 
 
-```
+```bash
 docker run -v $(pwd)/:/home/developer/workspace \
            emilioforrer/ci-tools:latest \
            curl -fG https://raw.githubusercontent.com/emilioforrer/ci-tools/develop/README.md > README.md
@@ -277,11 +303,33 @@ docker run -v $(pwd)/:/home/developer/workspace \
 
 e.g 
 
-```
+```bash
 docker run -v $(pwd)/:/home/developer/workspace \
            emilioforrer/ci-tools:latest \
            vault --version
 ```
+
+
+#### 1Password CLI
+
+[1Password](https://1password.com/downloads/command-line/) with 1Password you only ever need to memorize one password.
+All your other passwords and important information are protected by your Master Password, which only you know.
+e.g 
+
+```bash
+docker run -it emilioforrer/ci-tools:latest op --version
+```
+
+
+#### Semver CLI
+
+[semver-cli](https://github.com/davidrjonas/semver-cli) is a simple command line tool to compare and manipulate version strings.
+e.g 
+
+```bash
+docker run -it emilioforrer/ci-tools:latest semver --help
+```
+
 
 ## Development
 
@@ -298,20 +346,3 @@ DOCKER_PUSH=true ./build.sh
 
 **Note:** Before pushing an image, make sure to change the release version in the `VERSION` file.
 
-#### Check tools versions
-
-```bash
-docker run --rm emilioforrer/ci-tools:latest git --version
-docker run --rm emilioforrer/ci-tools:latest bash --version
-docker run --rm emilioforrer/ci-tools:latest yq --version
-docker run --rm emilioforrer/ci-tools:latest jq --version
-docker run --rm emilioforrer/ci-tools:latest curl --version
-docker run --rm emilioforrer/ci-tools:latest docker --version
-docker run --rm emilioforrer/ci-tools:latest docker-compose --version
-docker run --rm emilioforrer/ci-tools:latest kind --version
-docker run --rm emilioforrer/ci-tools:latest helm version
-docker run --rm -v "$KUBECONFIG:$KUBECONFIG" \
-           -e KUBECONFIG=$KUBECONFIG \
-           emilioforrer/ci-tools:latest kubectl version
-
-```

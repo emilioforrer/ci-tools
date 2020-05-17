@@ -23,7 +23,7 @@ else
 fi
 
 
-print() {
+println() {
   # Reset
   Color_Off='\033[0m'       # Text Reset
 
@@ -106,3 +106,5 @@ print() {
   [ -z "$text" ] && local text="$color$2${code}0m"
   echo -e "$text"
 }
+
+alias print=println

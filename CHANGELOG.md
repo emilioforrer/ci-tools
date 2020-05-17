@@ -5,6 +5,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Tools
+  - **1password**: v0.10.0
+  - **semver-cli**: 1.1.0
+  - **argocd**: v1.5.5
+- Library
+  - libc6-compat to be able to run `go` binaries
+### Changed
+- Tools
+  - Renamed `print` command to println, for printing text with color
+  - **git**: 2.24.3
+  - **yq**: 2.10.1
+
 
 ## [0.2.0] - 2020-04-18
 ### Added
