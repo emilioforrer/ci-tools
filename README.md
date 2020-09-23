@@ -4,24 +4,25 @@
 ## Description
 ---
 
-[CI Tools](https://github.com/emilioforrer/ci-tools) is a [Docker Hub](https://hub.docker.com/r/emilioforrer/ci-tools) image for CI/CD deployments, with tools like curl, dind, docker-compose, kind, kubectl, helm, vault, 1password, semver-cli, argo-cd, etc.
+[CI Tools](https://github.com/emilioforrer/ci-tools) is a [Docker Hub](https://hub.docker.com/r/emilioforrer/ci-tools) image for CI/CD deployments, with tools like curl, dind, docker-compose, kind, kubectl, helm, vault, 1password, semver-cli, argo-cd, bitwarden, etc.
 
 ### Tools and dependencies
 
 |Name              | Version                   | Command
 |------------------|---------------------------|--------
-|git               | 2.24.3                    | git version
-|bash              | 5.0.11(1)-release         | bash --version
-|yq                | 2.10.1                    | yq --version
-|jq                | v20191114-85-g260888d269  | jq --version
-|curl              | 7.67.0                    | curl --version
-|docker            | 19.03.8                   | docker --version
+|git               | 2.26.2                    | git version
+|bash              | 5.0.17(1)-release         | bash --version
+|yq                | 2.11.0                    | yq --version
+|jq                | v20200428-28-g864c859e9d  | jq --version
+|curl              | 7.69.1                    | curl --version
+|docker            | 19.03.13                  | docker --version
 |docker-compose    | 1.25.5                    | docker-compose --version
 |kind              | 0.7.0                     | kind --version
 |kubectl           | v1.18.2                   | kubectl version
 |helm              | v3.1.2                    | helm version
 |vault             | v1.4.0                    | vault --version
 |1password         | 0.10.0                    | op --version
+|bitwarden         | 1.12.0                    | bw --version
 |semver-cli        | 1.1.0                     | --
 |argocd            | v1.5.5                    | --
 
@@ -318,6 +319,16 @@ e.g
 
 ```bash
 docker run -it emilioforrer/ci-tools:latest op --version
+```
+
+#### Bitwarden CLI
+
+[Bitwarden](https://bitwarden.com/) Open Source Password Management for You and Your Business.
+he easiest and safest way for individuals and businesses to store, share, and secure sensitive data on any device
+e.g 
+
+```bash
+docker run -it emilioforrer/ci-tools:latest bw --version
 ```
 
 

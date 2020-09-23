@@ -5,6 +5,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.4.0] - 2020-09-23
+### Added
+- Tools
+  - **bitwarden**: v1.12.0
+  
+### Changed
+- Tools
+  - **git**: 2.26.2
+  - **bash**: 5.0.17(1)-release
+  - **yq**: 2.11.0
+  - **jq**: v20200428-28-g864c859e9d
+  - **curl**: 7.69.1
+  - **docker**: 19.03.13
+
+## [0.3.0] - 2020-05-17
 ### Added
 - Tools
   - **1password**: v0.10.0

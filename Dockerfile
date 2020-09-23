@@ -1,5 +1,20 @@
 ARG DOCKER_VERSION_IMAGE_NAME=docker:19
 
+FROM node:10-alpine as node-builder
+
+ENV BITWARDEN_VERSION="v1.12.0"
+
+RUN apk add git
+
+RUN git clone https://github.com/bitwarden/cli.git && \
+    cd cli/ && \
+    git checkout ${BITWARDEN_VERSION} && \
+    git submodule update --init --recursive && \
+    npm install && \
+    sed -i "/\"package:lin\":/c\\        \"package:lin\": \"pkg . --targets node10-alpine-x64 --output ./dist/linux/bw\"," ./package.json && \
+    npm run dist:lin 
+
+
 FROM golang:latest as go-builder
 
 RUN mkdir temp && \
@@ -35,10 +50,12 @@ ENV ONEPASSWORD_VERSION="v0.10.0"
 # https://github.com/argoproj/argo-cd/releases
 ENV ARGO_CD_VERSION="v1.5.5"
 
+ENV DOCKER_COMPOSE_VERSION="1.25.5"
+
 # Install dependencies
-RUN apk add --no-cache --virtual build-dependencies python-dev libffi-dev openssl-dev gcc libc-dev make && \
-    apk add --no-cache ca-certificates sudo bash git openssh curl py-pip jq libc6-compat  && \
-    pip install docker-compose && \
+RUN apk add --no-cache --virtual build-dependencies python3-dev libffi-dev openssl-dev gcc libc-dev make && \
+    apk add --no-cache ca-certificates sudo bash git openssh curl py-pip jq libc6-compat libstdc++ && \
+    pip install  docker-compose==${DOCKER_COMPOSE_VERSION} && \
     pip install yq
 
 # Remove the dev dependencies
@@ -77,6 +94,10 @@ RUN wget -q https://cache.agilebits.com/dist/1P/op/pkg/${ONEPASSWORD_VERSION}/op
 RUN curl -Lo ./argocd "https://github.com/argoproj/argo-cd/releases/download/${ARGO_CD_VERSION}/argocd-linux-amd64" && \
     chmod +x ./argocd  && \
     mv ./argocd /usr/local/bin
+
+# Copy binaries from node-builder
+# bitwarden-cli from https://github.com/bitwarden/cli 
+COPY --from=node-builder /cli/dist/linux /usr/local/bin
 
 # Copy binaries from go-builder
 # semver-cli from https://github.com/davidrjonas/semver-cli/releases 
