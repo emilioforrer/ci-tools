@@ -42,7 +42,7 @@ echo ""
 echo "kubectl Version"
 docker run --rm -v "$KUBECONFIG:$KUBECONFIG" \
            -e KUBECONFIG=$KUBECONFIG \
-           emilioforrer/ci-tools:latest kubectl version
+           emilioforrer/ci-tools:latest kubectl version --client
 echo "------------------------"
 echo ""
 echo "vault Version"
@@ -51,6 +51,10 @@ echo "------------------------"
 echo ""
 echo "1passwsord Version"
 docker run --rm emilioforrer/ci-tools:latest op --version
+echo "------------------------"
+echo ""
+echo "bitwarden Version"
+docker run --rm emilioforrer/ci-tools:latest bw --version
 echo "------------------------"
 echo ""
 echo "semver Status"
