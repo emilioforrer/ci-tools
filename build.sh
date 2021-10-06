@@ -6,7 +6,7 @@ VERSION_IMAGE_NAME=emilioforrer/ci-tools:${VERSION}
 
 LATEST_VERSION_IMAGE_NAME=emilioforrer/ci-tools:latest
 
-DOCKER_VERSION_IMAGE_NAME=docker:19
+DOCKER_VERSION_IMAGE_NAME=docker:20.10.9
 
 docker build --build-arg DOCKER_VERSION_IMAGE_NAME=${DOCKER_VERSION_IMAGE_NAME}-dind -t ${LATEST_VERSION_IMAGE_NAME}-dind -t ${VERSION_IMAGE_NAME}-dind .
 
