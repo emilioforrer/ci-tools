@@ -1,8 +1,12 @@
+# Note: Latest version of docker may be found at:
+# https://hub.docker.com/_/docker
 ARG DOCKER_VERSION_IMAGE_NAME=docker:19
 
 FROM node:10-alpine as node-builder
 
-ENV BITWARDEN_VERSION="v1.12.0"
+# Note: Latest version of bitwarden may be found at:
+# https://github.com/bitwarden/cli/releases
+ENV BITWARDEN_VERSION="v1.18.1"
 
 RUN apk add git
 
@@ -17,10 +21,14 @@ RUN git clone https://github.com/bitwarden/cli.git && \
 
 FROM golang:latest as go-builder
 
+# Note: Latest version of semver-cli may be found at:
+# https://github.com/davidrjonas/semver-cli/releases
+ENV SEMVER_CLI_VERSION="1.1.0"
+
 RUN mkdir temp && \
     cd temp && \
     go mod init local/build && \
-    go get -d -v github.com/davidrjonas/semver-cli@1.1.0 && \
+    go get -d -v github.com/davidrjonas/semver-cli@${SEMVER_CLI_VERSION} && \
     mkdir bin && \
     go build -o bin/semver github.com/davidrjonas/semver-cli
 
@@ -28,33 +36,35 @@ FROM ${DOCKER_VERSION_IMAGE_NAME}
 
 # Note: Latest version of kubectl may be found at:
 # https://github.com/kubernetes/kubernetes/releases
-ENV KUBECTL_VERSION="v1.18.2"
+ENV KUBECTL_VERSION="v1.22.2"
 
 # Note: Latest version of helm may be found at:
 # https://github.com/kubernetes/helm/releases
-ENV HELM_VERSION="v3.1.2"
+ENV HELM_VERSION="v3.7.0"
 
 # Note: Latest version of vault may be found at:
 # https://github.com/kubernetes-sigs/kind/releases
-ENV KIND_VERSION="v0.7.0"
+ENV KIND_VERSION="v0.11.1"
 
 # Note: Latest version of vault may be found at:
 # https://releases.hashicorp.com/vault/
-ENV VAULT_VERSION="1.4.0"
+ENV VAULT_VERSION="1.8.3"
 
 # Note: Latest version of 1password may be found at:
 # https://app-updates.agilebits.com/product_history/CLI
-ENV ONEPASSWORD_VERSION="v0.10.0"
+ENV ONEPASSWORD_VERSION="v1.12.2"
 
 # Note: Latest version of argo-cd may be found at:
 # https://github.com/argoproj/argo-cd/releases
-ENV ARGO_CD_VERSION="v1.5.5"
+ENV ARGO_CD_VERSION="v2.1.3"
 
-ENV DOCKER_COMPOSE_VERSION="1.25.5"
+# Note: Latest version of docker-compose may be found at:
+# https://docs.docker.com/compose/release-notes/
+ENV DOCKER_COMPOSE_VERSION="1.29.2"
 
 # Install dependencies
-RUN apk add --no-cache --virtual build-dependencies python3-dev libffi-dev openssl-dev gcc libc-dev make && \
-    apk add --no-cache ca-certificates sudo bash git openssh curl py-pip jq libc6-compat libstdc++ && \
+RUN apk add --no-cache --virtual build-dependencies gcc musl-dev python3-dev libffi-dev openssl-dev cargo libc-dev make && \
+    apk add --update --no-cache ca-certificates sudo bash git openssh-client curl py-pip jq libc6-compat libstdc++ && \
     pip install  docker-compose==${DOCKER_COMPOSE_VERSION} && \
     pip install yq
 
@@ -65,7 +75,7 @@ RUN apk del build-dependencies
 RUN wget -q https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl && \
     chmod +x /usr/local/bin/kubectl 
 
-# Download and install heml
+# Download and install helm
 RUN wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm && \
     chmod +x /usr/local/bin/helm
 
