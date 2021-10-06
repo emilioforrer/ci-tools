@@ -35,14 +35,8 @@ echo "kind Version"
 docker run --rm emilioforrer/ci-tools:latest kind --version
 echo "------------------------"
 echo ""
-echo "kind Version"
+echo "helm Version"
 docker run --rm emilioforrer/ci-tools:latest helm version
-echo "------------------------"
-echo ""
-echo "kubectl Version"
-docker run --rm -v "$KUBECONFIG:$KUBECONFIG" \
-           -e KUBECONFIG=$KUBECONFIG \
-           emilioforrer/ci-tools:latest kubectl version --client
 echo "------------------------"
 echo ""
 echo "vault Version"
@@ -62,6 +56,10 @@ docker run --rm emilioforrer/ci-tools:latest semver get major 1.0.0 1>/dev/null 
 echo "------------------------"
 echo ""
 echo "argocd Status"
-docker run --rm emilioforrer/ci-tools:latest argocd 1>/dev/null && echo "OK"
+docker run --rm emilioforrer/ci-tools:latest argocd version --client
+echo "------------------------"
+echo ""
+echo "kubectl Version"
+docker run --rm emilioforrer/ci-tools:latest kubectl version --client
 echo "------------------------"
 echo ""

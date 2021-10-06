@@ -8,23 +8,23 @@
 
 ### Tools and dependencies
 
-|Name              | Version                   | Command
-|------------------|---------------------------|--------
-|git               | 2.26.2                    | git version
-|bash              | 5.0.17(1)-release         | bash --version
-|yq                | 2.11.0                    | yq --version
-|jq                | v20200428-28-g864c859e9d  | jq --version
-|curl              | 7.69.1                    | curl --version
-|docker            | 19.03.13                  | docker --version
-|docker-compose    | 1.25.5                    | docker-compose --version
-|kind              | 0.7.0                     | kind --version
-|kubectl           | v1.18.2                   | kubectl version
-|helm              | v3.1.2                    | helm version
-|vault             | v1.4.0                    | vault --version
-|1password         | 0.10.0                    | op --version
-|bitwarden         | 1.12.0                    | bw --version
-|semver-cli        | 1.1.0                     | --
-|argocd            | v1.5.5                    | --
+|Name              | Version                    | Command
+|------------------|----------------------------|--------
+|git               | 2.32.0                     | git version
+|bash              | 5.1.4(1)-release           | bash --version
+|yq                | 2.12.2                     | yq --version
+|jq                | v20210212-7320-g4be84a0f82 | jq --version
+|curl              | 7.79.1                     | curl --version
+|docker            | 20.10.9                    | docker --version
+|docker-compose    | 1.29.2                     | docker-compose --version
+|kind              | 0.11.1                     | kind --version
+|kubectl           | v1.22.2                    | kubectl version --client
+|helm              | v3.7.0                     | helm version
+|vault             | v1.8.3                     | vault --version
+|1password         | 1.12.2                     | op --version
+|bitwarden         | 1.18.1                     | bw --version
+|semver-cli        | 1.1.0                      | --
+|argocd            | v2.1.3+d855831             | argocd version --client
 
 **Note:** to see a list of changes for supported tags and dependency versions, please see the [CHANGELOG.md](CHANGELOG.md)
 
