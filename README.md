@@ -25,6 +25,7 @@
 |bitwarden         | 1.18.1                     | bw --version
 |semver-cli        | 1.1.0                      | --
 |argocd            | v2.1.3+d855831             | argocd version --client
+|waypoint          | v0.6.3 (bd303e12)          | waypoint --version
 
 **Note:** to see a list of changes for supported tags and dependency versions, please see the [CHANGELOG.md](CHANGELOG.md)
 
@@ -331,7 +332,14 @@ e.g
 docker run -it emilioforrer/ci-tools:latest bw --version
 ```
 
+#### Waypoint CLI
 
+[waypoint-cli](https://www.waypointproject.io/) allows developers to deploy, manage, and observe their applications through a consistent abstraction of underlying infrastructure.
+e.g 
+
+```bash
+waypoint --help
+```
 #### Semver CLI
 
 [semver-cli](https://github.com/davidrjonas/semver-cli) is a simple command line tool to compare and manipulate version strings.
