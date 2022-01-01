@@ -6,9 +6,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2021-12-31
 ### Added
 - Tools
-  - **waypoint**: v0.6.3
+  - **waypoint**: 0.6.3
+  - **earthly**: 0.6.2
+### Changed
+- Tools
+  - **git**: 2.34.1
+  - **bash**: 5.1.8(1)-release
+  - **yq**: 2.13.0
+  - **jq**: v3.15.0_alpha20210804-4073-gb39e1241e8
+  - **curl**: 7.80.0
+  - **docker**: 20.10.12
+  - **helm**: 3.7.2
+  - **vault**: 1.9.2
+  - **1passwsord**: 1.12.3
+  - **argocd**: v2.2.1+122ecef
+  - **bitwarden**: 1.20.0
+  - **kubectl**: 1.23.1
 
 ## [0.5.0] - 2021-10-06
 ### Changed
