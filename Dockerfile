@@ -34,6 +34,9 @@ RUN mkdir temp && \
 
 FROM ${DOCKER_VERSION_IMAGE_NAME}
 
+# Define docker user
+ARG DOCKER_USER=developer
+
 # Note: Latest version of kubectl may be found at:
 # https://github.com/kubernetes/kubernetes/releases
 ENV KUBECTL_VERSION="v1.22.2"
@@ -49,6 +52,10 @@ ENV KIND_VERSION="v0.11.1"
 # Note: Latest version of vault may be found at:
 # https://releases.hashicorp.com/vault/
 ENV VAULT_VERSION="1.8.3"
+
+# Note: Latest version of waypoint may be found at:
+# https://releases.hashicorp.com/waypoint/
+ENV WAYPOINT_VERSION="0.6.3"
 
 # Note: Latest version of 1password may be found at:
 # https://app-updates.agilebits.com/product_history/CLI
@@ -92,6 +99,12 @@ RUN wget -q https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_
     mv ./vault /usr/local/bin && \
     rm ./vault_${VAULT_VERSION}_linux_amd64.zip
 
+RUN wget -q "https://releases.hashicorp.com/waypoint/${WAYPOINT_VERSION}/waypoint_${WAYPOINT_VERSION}_linux_amd64.zip" && \
+    unzip waypoint_${WAYPOINT_VERSION}_linux_amd64.zip && \
+    chmod +x ./waypoint  && \
+    mv ./waypoint /usr/local/bin && \
+    rm ./waypoint_${WAYPOINT_VERSION}_linux_amd64.zip
+
 # Download and install 1password cli
 RUN wget -q https://cache.agilebits.com/dist/1P/op/pkg/${ONEPASSWORD_VERSION}/op_linux_amd64_${ONEPASSWORD_VERSION}.zip && \
     chown root op_linux_amd64_${ONEPASSWORD_VERSION}.zip && \
@@ -112,9 +125,6 @@ COPY --from=node-builder /cli/dist/linux /usr/local/bin
 # Copy binaries from go-builder
 # semver-cli from https://github.com/davidrjonas/semver-cli/releases 
 COPY --from=go-builder /go/temp/bin /usr/local/bin
-
-# Define docker user
-ARG DOCKER_USER=developer
 
 # Add the docker user and group
 RUN addgroup -S docker && adduser --uid 1000 -S ${DOCKER_USER} -G docker
