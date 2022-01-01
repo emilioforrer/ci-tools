@@ -114,7 +114,7 @@ COPY --from=node-builder /cli/dist/linux /usr/local/bin
 COPY --from=go-builder /go/temp/bin /usr/local/bin
 
 # Define docker user
-ENV DOCKER_USER=developer
+ARG DOCKER_USER=developer
 
 # Add the docker user and group
 RUN addgroup -S docker && adduser --uid 1000 -S ${DOCKER_USER} -G docker
