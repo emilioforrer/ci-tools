@@ -4,7 +4,7 @@
 ## Description
 ---
 
-[CI Tools](https://github.com/emilioforrer/ci-tools) is a [Docker Hub](https://hub.docker.com/r/emilioforrer/ci-tools) image for CI/CD deployments, with tools like curl, dind, docker-compose, kind, kubectl, helm, vault, 1password, semver-cli, argo-cd, bitwarden, etc.
+[CI Tools](https://github.com/emilioforrer/ci-tools) is a [Docker Hub](https://hub.docker.com/r/emilioforrer/ci-tools) image for CI/CD deployments, with tools like curl, dind, docker-compose, kind, kubectl, helm, vault, 1password, semver-cli, argo-cd, bitwarden, waypoint, earthly etc.
 
 ### Tools and dependencies
 
@@ -26,6 +26,7 @@
 |semver-cli        | 1.1.0                      | --
 |argocd            | v2.1.3+d855831             | argocd version --client
 |waypoint          | v0.6.3 (bd303e12)          | waypoint --version
+|earthly           | v0.6.2                     | earthly --version
 
 **Note:** to see a list of changes for supported tags and dependency versions, please see the [CHANGELOG.md](CHANGELOG.md)
 
@@ -338,7 +339,17 @@ docker run -it emilioforrer/ci-tools:latest bw --version
 e.g 
 
 ```bash
-waypoint --help
+docker run -it emilioforrer/ci-tools:latest waypoint --help
+```
+
+#### Earthly CLI
+
+[earthly-cli](https://earthly.dev/) is a syntax for defining your build. It works with your existing build system. Get repeatable and understandable builds today.
+e.g 
+
+```bash
+# In order to use `earthly bootstrap` inside the image without sudo, you need to add `--group-add $(stat -c '%g' /var/run/docker.sock)` 
+docker run -it -v /var/run/docker.sock:/var/run/docker.sock --group-add $(stat -c '%g' /var/run/docker.sock) emilioforrer/ci-tools:latest earthly --help
 ```
 #### Semver CLI
 
