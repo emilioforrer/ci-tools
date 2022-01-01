@@ -1,12 +1,12 @@
 # Note: Latest version of docker may be found at:
 # https://hub.docker.com/_/docker
-ARG DOCKER_VERSION_IMAGE_NAME=docker:19
+ARG DOCKER_VERSION_IMAGE_NAME=docker:20
 
 FROM node:10-alpine as node-builder
 
 # Note: Latest version of bitwarden may be found at:
 # https://github.com/bitwarden/cli/releases
-ENV BITWARDEN_VERSION="v1.18.1"
+ENV BITWARDEN_VERSION="v1.20.0"
 
 RUN apk add git
 
@@ -34,13 +34,16 @@ RUN mkdir temp && \
 
 FROM ${DOCKER_VERSION_IMAGE_NAME}
 
+# Define docker user
+ARG DOCKER_USER=developer
+
 # Note: Latest version of kubectl may be found at:
 # https://github.com/kubernetes/kubernetes/releases
-ENV KUBECTL_VERSION="v1.22.2"
+ENV KUBECTL_VERSION="v1.23.1"
 
 # Note: Latest version of helm may be found at:
 # https://github.com/kubernetes/helm/releases
-ENV HELM_VERSION="v3.7.0"
+ENV HELM_VERSION="v3.7.2"
 
 # Note: Latest version of vault may be found at:
 # https://github.com/kubernetes-sigs/kind/releases
@@ -48,15 +51,23 @@ ENV KIND_VERSION="v0.11.1"
 
 # Note: Latest version of vault may be found at:
 # https://releases.hashicorp.com/vault/
-ENV VAULT_VERSION="1.8.3"
+ENV VAULT_VERSION="1.9.2"
+
+# Note: Latest version of waypoint may be found at:
+# https://releases.hashicorp.com/waypoint/
+ENV WAYPOINT_VERSION="0.6.3"
+
+# Note: Latest version of earthly may be found at:
+# https://github.com/earthly/earthly/releases/
+ENV EARTHLY_VERSION="v0.6.2"
 
 # Note: Latest version of 1password may be found at:
 # https://app-updates.agilebits.com/product_history/CLI
-ENV ONEPASSWORD_VERSION="v1.12.2"
+ENV ONEPASSWORD_VERSION="v1.12.3"
 
 # Note: Latest version of argo-cd may be found at:
 # https://github.com/argoproj/argo-cd/releases
-ENV ARGO_CD_VERSION="v2.1.3"
+ENV ARGO_CD_VERSION="v2.2.1"
 
 # Note: Latest version of docker-compose may be found at:
 # https://docs.docker.com/compose/release-notes/
@@ -92,6 +103,12 @@ RUN wget -q https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_
     mv ./vault /usr/local/bin && \
     rm ./vault_${VAULT_VERSION}_linux_amd64.zip
 
+RUN wget -q "https://releases.hashicorp.com/waypoint/${WAYPOINT_VERSION}/waypoint_${WAYPOINT_VERSION}_linux_amd64.zip" && \
+    unzip waypoint_${WAYPOINT_VERSION}_linux_amd64.zip && \
+    chmod +x ./waypoint  && \
+    mv ./waypoint /usr/local/bin && \
+    rm ./waypoint_${WAYPOINT_VERSION}_linux_amd64.zip
+
 # Download and install 1password cli
 RUN wget -q https://cache.agilebits.com/dist/1P/op/pkg/${ONEPASSWORD_VERSION}/op_linux_amd64_${ONEPASSWORD_VERSION}.zip && \
     chown root op_linux_amd64_${ONEPASSWORD_VERSION}.zip && \
@@ -99,6 +116,10 @@ RUN wget -q https://cache.agilebits.com/dist/1P/op/pkg/${ONEPASSWORD_VERSION}/op
     chmod +x ./op  && \
     mv ./op /usr/local/bin && \
     rm ./op_linux_amd64_${ONEPASSWORD_VERSION}.zip
+
+# Download and install earthly cli
+RUN wget https://github.com/earthly/earthly/releases/download/${EARTHLY_VERSION}/earthly-linux-amd64 -O /usr/local/bin/earthly && \
+    chmod +x /usr/local/bin/earthly
 
 # Download and install argo-cd
 RUN curl -Lo ./argocd "https://github.com/argoproj/argo-cd/releases/download/${ARGO_CD_VERSION}/argocd-linux-amd64" && \
@@ -112,9 +133,6 @@ COPY --from=node-builder /cli/dist/linux /usr/local/bin
 # Copy binaries from go-builder
 # semver-cli from https://github.com/davidrjonas/semver-cli/releases 
 COPY --from=go-builder /go/temp/bin /usr/local/bin
-
-# Define docker user
-ENV DOCKER_USER=developer
 
 # Add the docker user and group
 RUN addgroup -S docker && adduser --uid 1000 -S ${DOCKER_USER} -G docker

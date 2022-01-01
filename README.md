@@ -4,27 +4,29 @@
 ## Description
 ---
 
-[CI Tools](https://github.com/emilioforrer/ci-tools) is a [Docker Hub](https://hub.docker.com/r/emilioforrer/ci-tools) image for CI/CD deployments, with tools like curl, dind, docker-compose, kind, kubectl, helm, vault, 1password, semver-cli, argo-cd, bitwarden, etc.
+[CI Tools](https://github.com/emilioforrer/ci-tools) is a [Docker Hub](https://hub.docker.com/r/emilioforrer/ci-tools) image for CI/CD deployments, with tools like curl, dind, docker-compose, kind, kubectl, helm, vault, 1password, semver-cli, argo-cd, bitwarden, waypoint, earthly etc.
 
 ### Tools and dependencies
 
 |Name              | Version                    | Command
 |------------------|----------------------------|--------
-|git               | 2.32.0                     | git version
-|bash              | 5.1.4(1)-release           | bash --version
-|yq                | 2.12.2                     | yq --version
-|jq                | v20210212-7320-g4be84a0f82 | jq --version
-|curl              | 7.79.1                     | curl --version
+|git               | 2.34.1                     | git version
+|bash              | 5.1.8(1)-release           | bash --version
+|yq                | 2.13.0                     | yq --version
+|jq                | v3.15.0_alpha20210804-4073 | jq --version
+|curl              | 7.80.0                     | curl --version
 |docker            | 20.10.9                    | docker --version
 |docker-compose    | 1.29.2                     | docker-compose --version
 |kind              | 0.11.1                     | kind --version
-|kubectl           | v1.22.2                    | kubectl version --client
-|helm              | v3.7.0                     | helm version
-|vault             | v1.8.3                     | vault --version
-|1password         | 1.12.2                     | op --version
-|bitwarden         | 1.18.1                     | bw --version
+|kubectl           | v1.23.1                    | kubectl version --client
+|helm              | v3.7.2                     | helm version
+|vault             | v1.9.2                     | vault --version
+|1password         | 1.12.3                     | op --version
+|bitwarden         | 1.20.0                     | bw --version
 |semver-cli        | 1.1.0                      | --
-|argocd            | v2.1.3+d855831             | argocd version --client
+|argocd            | v2.2.1+122ecef             | argocd version --client
+|waypoint          | v0.6.3 (bd303e12)          | waypoint --version
+|earthly           | v0.6.2                     | earthly --version
 
 **Note:** to see a list of changes for supported tags and dependency versions, please see the [CHANGELOG.md](CHANGELOG.md)
 
@@ -331,7 +333,24 @@ e.g
 docker run -it emilioforrer/ci-tools:latest bw --version
 ```
 
+#### Waypoint CLI
 
+[waypoint-cli](https://www.waypointproject.io/) allows developers to deploy, manage, and observe their applications through a consistent abstraction of underlying infrastructure.
+e.g 
+
+```bash
+docker run -it emilioforrer/ci-tools:latest waypoint --help
+```
+
+#### Earthly CLI
+
+[earthly-cli](https://earthly.dev/) is a syntax for defining your build. It works with your existing build system. Get repeatable and understandable builds today.
+e.g 
+
+```bash
+# In order to use `earthly bootstrap` inside the image without sudo, you need to add `--group-add $(stat -c '%g' /var/run/docker.sock)` 
+docker run -it -v /var/run/docker.sock:/var/run/docker.sock --group-add $(stat -c '%g' /var/run/docker.sock) emilioforrer/ci-tools:latest earthly --help
+```
 #### Semver CLI
 
 [semver-cli](https://github.com/davidrjonas/semver-cli) is a simple command line tool to compare and manipulate version strings.
