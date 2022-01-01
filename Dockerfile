@@ -57,6 +57,10 @@ ENV VAULT_VERSION="1.8.3"
 # https://releases.hashicorp.com/waypoint/
 ENV WAYPOINT_VERSION="0.6.3"
 
+# Note: Latest version of earthly may be found at:
+# https://github.com/earthly/earthly/releases/
+ENV EARTHLY_VERSION="v0.6.2"
+
 # Note: Latest version of 1password may be found at:
 # https://app-updates.agilebits.com/product_history/CLI
 ENV ONEPASSWORD_VERSION="v1.12.2"
@@ -112,6 +116,10 @@ RUN wget -q https://cache.agilebits.com/dist/1P/op/pkg/${ONEPASSWORD_VERSION}/op
     chmod +x ./op  && \
     mv ./op /usr/local/bin && \
     rm ./op_linux_amd64_${ONEPASSWORD_VERSION}.zip
+
+# Download and install earthly cli
+RUN wget https://github.com/earthly/earthly/releases/download/${EARTHLY_VERSION}/earthly-linux-amd64 -O /usr/local/bin/earthly && \
+    chmod +x /usr/local/bin/earthly
 
 # Download and install argo-cd
 RUN curl -Lo ./argocd "https://github.com/argoproj/argo-cd/releases/download/${ARGO_CD_VERSION}/argocd-linux-amd64" && \
