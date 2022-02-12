@@ -107,4 +107,40 @@ println() {
   echo -e "$text"
 }
 
+function generate_service_account_kubeconfig() {
+  # Point to the internal API server hostname
+  local API_SERVER=$1
+  [[ -z "${API_SERVER}" ]] && API_SERVER="https://kubernetes.default.svc"
+  # Path to ServiceAccount token
+  local SERVICE_ACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount
+  # Read this Pod's namespace
+  local NAMESPACE=$(cat ${SERVICE_ACCOUNT}/namespace)
+  # Read the ServiceAccount bearer token
+  local SERVICE_ACCOUNT_TOKEN=$(cat ${SERVICE_ACCOUNT}/token)
+  # Reference the internal certificate authority (CA)
+  local CACERT=${SERVICE_ACCOUNT}/ca.crt
+  local FILE_NAME=$2
+  [[ -z "${FILE_NAME}" ]] && FILE_NAME="kubeconfig"
+  cat << EOF > ${FILE_NAME}
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: $(cat $CACERT | base64 -w 0)
+    server: ${API_SERVER}
+  name: local_cluster
+contexts:
+- context:
+    cluster: local_cluster
+    user: local_cluster_user
+  name: local_cluster
+current-context: local_cluster
+kind: Config
+preferences: {}
+users:
+- name: local_cluster_user
+  user:
+    token: ${SERVICE_ACCOUNT_TOKEN}
+EOF
+}
+
 alias print=println
