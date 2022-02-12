@@ -6,6 +6,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2022-02-12
+### Added
+- Commands
+  - **generate_service_account_kubeconfig**
+### Changed
+- Tools
+  - **kubectl**: 1.23.3
+  - **helm**: 3.8.0
+  - **vault**: 1.9.3
+  - **1passwsord**: 1.12.4
+  - **bitwarden**: 1.21.0
+  - **argocd**: v2.2.5+8f981cc
+  - **waypoint**: 0.7.1
+  - **earthly**: 0.6.7
+
 ## [0.6.0] - 2021-12-31
 ### Added
 - Tools
