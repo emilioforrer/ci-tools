@@ -15,18 +15,18 @@
 |yq                | 2.13.0                     | yq --version
 |jq                | v3.15.0_alpha20210804-4073 | jq --version
 |curl              | 7.80.0                     | curl --version
-|docker            | 20.10.9                    | docker --version
+|docker            | 20.10.12                   | docker --version
 |docker-compose    | 1.29.2                     | docker-compose --version
 |kind              | 0.11.1                     | kind --version
-|kubectl           | v1.23.1                    | kubectl version --client
-|helm              | v3.7.2                     | helm version
-|vault             | v1.9.2                     | vault --version
-|1password         | 1.12.3                     | op --version
-|bitwarden         | 1.20.0                     | bw --version
+|kubectl           | v1.23.3                    | kubectl version --client
+|helm              | v3.8.0                     | helm version
+|vault             | v1.9.3                     | vault --version
+|1password         | 1.12.4                     | op --version
+|bitwarden         | 1.21.0                     | bw --version
 |semver-cli        | 1.1.0                      | --
-|argocd            | v2.2.1+122ecef             | argocd version --client
-|waypoint          | v0.6.3 (bd303e12)          | waypoint --version
-|earthly           | v0.6.2                     | earthly --version
+|argocd            | v2.2.5+8f981cc             | argocd version --client
+|waypoint          | v0.7.1                     | waypoint --version
+|earthly           | v0.6.7                     | earthly --version
 
 **Note:** to see a list of changes for supported tags and dependency versions, please see the [CHANGELOG.md](CHANGELOG.md)
 
@@ -35,11 +35,31 @@
 
 #### Bash
 
-This image has a custom colored bash and prints the `STERR` in red color .
+This image has a custom colored bash and prints the `STERR` in red color and new extra **commands**:
 
-New extra **commands**:
+**Note:** in order to set up the bash and import the commands, you can run `source /scripts/.bashrc;`
 
-##### `println`
+
+
+##### Command - `generate_service_account_kubeconfig`
+
+Is a new command that generates a `kubeconfig` file based on the [service account token](https://kubernetes.io/docs/tasks/run-application/access-api-from-pod/), while running in a pod. 
+
+**e.g.**
+
+```bash
+generate_service_account_kubeconfig;
+export KUBECONFIG="$(pwd)/kubeconfig";
+```
+
+With parameters (API_SERVER, FILE_NAME)
+
+```bash
+generate_service_account_kubeconfig "https://kubernetes.default.svc.cluster.local" "kubeconfig-dev";
+export KUBECONFIG="$(pwd)/kubeconfig-dev";
+```
+
+##### Command - `println`
 
 Is a new command that accepts as a first parameter a **color** and a second parameter a **text** to print (if no color given, it prints the text with the **default** color).
 
@@ -83,6 +103,7 @@ info            |  i
 warn (yellow)   |  w
 error (red)     |  e
 sucsess (green) | ok
+
 
 #### DIND (Docker in Docker)
 
