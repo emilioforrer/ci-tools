@@ -2,11 +2,11 @@
 # https://hub.docker.com/_/docker
 ARG DOCKER_VERSION_IMAGE_NAME=docker:20
 
-FROM node:10-alpine as node-builder
+FROM node:16-alpine as node-builder
 
 # Note: Latest version of bitwarden may be found at:
 # https://github.com/bitwarden/cli/releases
-ENV BITWARDEN_VERSION="v1.20.0"
+ENV BITWARDEN_VERSION="v1.21.0"
 
 RUN apk add git
 
@@ -15,7 +15,7 @@ RUN git clone https://github.com/bitwarden/cli.git && \
     git checkout ${BITWARDEN_VERSION} && \
     git submodule update --init --recursive && \
     npm install && \
-    sed -i "/\"package:lin\":/c\\        \"package:lin\": \"pkg . --targets node10-alpine-x64 --output ./dist/linux/bw\"," ./package.json && \
+    sed -i "/\"package:lin\":/c\\        \"package:lin\": \"pkg . --targets node16-alpine-x64 --output ./dist/linux/bw\"," ./package.json && \
     npm run dist:lin 
 
 
@@ -39,11 +39,11 @@ ARG DOCKER_USER=developer
 
 # Note: Latest version of kubectl may be found at:
 # https://github.com/kubernetes/kubernetes/releases
-ENV KUBECTL_VERSION="v1.23.1"
+ENV KUBECTL_VERSION="v1.23.3"
 
 # Note: Latest version of helm may be found at:
 # https://github.com/kubernetes/helm/releases
-ENV HELM_VERSION="v3.7.2"
+ENV HELM_VERSION="v3.8.0"
 
 # Note: Latest version of vault may be found at:
 # https://github.com/kubernetes-sigs/kind/releases
@@ -51,23 +51,23 @@ ENV KIND_VERSION="v0.11.1"
 
 # Note: Latest version of vault may be found at:
 # https://releases.hashicorp.com/vault/
-ENV VAULT_VERSION="1.9.2"
+ENV VAULT_VERSION="1.9.3"
 
 # Note: Latest version of waypoint may be found at:
 # https://releases.hashicorp.com/waypoint/
-ENV WAYPOINT_VERSION="0.6.3"
+ENV WAYPOINT_VERSION="0.7.1"
 
 # Note: Latest version of earthly may be found at:
 # https://github.com/earthly/earthly/releases/
-ENV EARTHLY_VERSION="v0.6.2"
+ENV EARTHLY_VERSION="v0.6.7"
 
 # Note: Latest version of 1password may be found at:
 # https://app-updates.agilebits.com/product_history/CLI
-ENV ONEPASSWORD_VERSION="v1.12.3"
+ENV ONEPASSWORD_VERSION="v1.12.4"
 
 # Note: Latest version of argo-cd may be found at:
 # https://github.com/argoproj/argo-cd/releases
-ENV ARGO_CD_VERSION="v2.2.1"
+ENV ARGO_CD_VERSION="v2.2.5"
 
 # Note: Latest version of docker-compose may be found at:
 # https://docs.docker.com/compose/release-notes/

@@ -35,6 +35,10 @@ echo "kind Version"
 docker run --rm emilioforrer/ci-tools:latest kind --version
 echo "------------------------"
 echo ""
+echo "kubectl Version"
+docker run --rm emilioforrer/ci-tools:latest kubectl version --client
+echo "------------------------"
+echo ""
 echo "helm Version"
 docker run --rm emilioforrer/ci-tools:latest helm version
 echo "------------------------"
@@ -57,10 +61,6 @@ echo "------------------------"
 echo ""
 echo "argocd Version"
 docker run --rm emilioforrer/ci-tools:latest argocd version --client
-echo "------------------------"
-echo ""
-echo "kubectl Version"
-docker run --rm emilioforrer/ci-tools:latest kubectl version --client
 echo "------------------------"
 echo ""
 echo "waypoint Version"
